@@ -12,7 +12,9 @@ Make sure you have a working Go environment. Go version 1.10+ is supported. [See
 To install fops, simply run:
 
 ```
+go get github.com/hiein2012/fops
 ```
+You can find the installed folder is in $GOPATH/src/github.com/hiein2012/fops.
 
 Make sure your PATH includes the $GOPATH/bin directory so your commands can be easily used:
 
