@@ -5,6 +5,8 @@ This is a small command-line application that could implement two functions as b
 - Print line count of input file
 - Print the checksum of file, support multiple algorithms: md5, sha1 and sha256
 
+The whole command lines mentioned  below are base on linux-base OS.
+
 ## Installation
 
 Make sure you have a working Go environment. Go version 1.10+ is supported. [See the install instructions for Go.](http://golang.org/doc/install.html)
@@ -21,7 +23,7 @@ Make sure your PATH includes the `$GOPATH/bin` directory so your commands can be
 ```
 export PATH=$PATH:$GOPATH/bin
 ```
-This application was made base on `urfave/cli`. To install cli , you can run 
+This application was made base on `urfave/cli`. To install cli , you can run :
 
 ```
 $ go get github.com/urfave/cli
@@ -35,6 +37,33 @@ Under the path `$GOPATH/src/github.com/hiein2012/fops` , you can compiler the `f
 $ go build fops.go
 ```
 
+To Run `fops` function globally , you can run : 
+
+``` 
+$ cp fops /usr/local/bin 
+```
+
+- ### Function one : Print line count of input file
+
+You can use `linecount` to get the rows number of input file , and use `-f` or `--file` as flag to take input file with the following code in it:
+
+```
+$ fops linecount -f inputfile.text
+```
+
+- ### Function two : Print the checksum of file (support algorithms : md5 / sh1 / sha256 )
+
+You can assign specific flag to get checksum of file including three algorithms :
+```
+$ fops checksum -f  inputfile.text --md5 
+$ fops checksum -f  inputfile.text --sha1
+$ fops checksum -f  inputfile.text --sha256
+```
+
+
+## Features not yet implemented
+
+- Function `linecount`  can't not detect binary file .
 
 ##  Prerequisites
 
