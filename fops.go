@@ -55,7 +55,7 @@ func main() {
 							}
 							fmt.Println(result)
 						} else {
-							fmt.Println("error: No such file " + filename)
+							fmt.Println(error)
 						}
 						// if file does *not* exist
 					} else if os.IsNotExist(err) {
