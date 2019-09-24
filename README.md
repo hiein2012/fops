@@ -1,4 +1,4 @@
-#fops
+# fops
 ## Overview
 
 This is a small command-line application that could implement two functions as below:
@@ -12,25 +12,35 @@ Make sure you have a working Go environment. Go version 1.10+ is supported. [See
 To install fops, simply run:
 
 ```
-go get github.com/hiein2012/fops
+$ go get github.com/hiein2012/fops
 ```
 You can find the installed folder is in $GOPATH/src/github.com/hiein2012/fops.
 
-Make sure your PATH includes the $GOPATH/bin directory so your commands can be easily used:
+Make sure your PATH includes the `$GOPATH/bin` directory so your commands can be easily used:
 
 ```
 export PATH=$PATH:$GOPATH/bin
 ```
+This application was made base on `urfave/cli`. To install cli , you can run 
 
+```
+$ go get github.com/urfave/cli
+```
 
 ## Getting Started
+
+Under the path `$GOPATH/src/github.com/hiein2012/fops` , you can compiler the `fops.go` to output a binary file.
+
+```
+$ go build fops.go
+```
 
 
 ##  Prerequisites
 
 Make sure you have installed all of the following prerequisites on your development machine:
 
-1. GO
-2. Git
-
+1. [GO](https://golang.org/dl/) 
+2. [Git](https://git-scm.com/downloads)
+3. [urfave/cli](https://github.com/urfave/cli)
 
