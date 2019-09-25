@@ -6,11 +6,21 @@ import (
 	"crypto/sha1"
 	"crypto/sha256"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 
 	"github.com/urfave/cli"
 )
+
+//CheckFileExists : check file exists or not
+func CheckFileExists(filename string) bool {
+	_, err := os.Stat(filename)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return true
+}
 
 func main() {
 	app := cli.NewApp()
@@ -36,37 +46,37 @@ func main() {
 				},
 			},
 			Action: func(c *cli.Context) error {
-				if filename != "" {
+				// check given file exists or not
+				// If file does not exists ,  return
+				if CheckFileExists(filename) == false {
+					fmt.Println("error: No such file " + filename)
+					return nil
+				}
+
+				// Already checked file given file exists
+				// use FileMode to check file/dir
+				fi, _ := os.Lstat(filename)
+				
+				switch mode := fi.Mode(); {
+				// if given file is directory
+				case mode.IsDir():
+					fmt.Println("error: Expected File got directory " + filename)
+
+				// if given file is regular file
+				case mode.IsRegular():
+					// start to line count
 					fileResult, error := os.Open(filename)
-					defer fileResult.Close()
-
-					// if file exists
-					if stat, err := os.Stat(filename); err == nil {
-						// if file is a directory
-						if stat.IsDir() {
-							fmt.Println("error: Expected File got directory " + filename)
-						} else if error == nil {
-							// Create new Scanner.
-							scanner := bufio.NewScanner(fileResult)
-							result := 0
-							// Use Scan.
-							for scanner.Scan() {
-								result++
-							}
-							fmt.Println(result)
-						} else {
-							fmt.Println(error)
-						}
-						// if file does *not* exist
-					} else if os.IsNotExist(err) {
-
-						fmt.Println("error: No such file " + filename)
-					} else {
-						// Schrodinger: file may or may not exist. See err for details.
-
-						// Therefore, do *NOT* use !os.IsNotExist(err) to test for file existence
-
+					if error != nil {
+						log.Fatal(error)
 					}
+					defer fileResult.Close()
+					scanner := bufio.NewScanner(fileResult)
+					lineCountNumber := 0
+					for scanner.Scan() {
+						lineCountNumber++
+					}
+					fmt.Println(lineCountNumber)
+
 				}
 
 				return nil
@@ -98,18 +108,27 @@ func main() {
 				},
 			},
 			Action: func(c *cli.Context) error {
-				if filename != "" {
+				// check given file exists or not
+				// If file does not exists ,  return
+				if CheckFileExists(filename) == false {
+					fmt.Println("error: No such file " + filename)
+					return nil
+				}
 
-					data := []byte(filename)
-					if c.Bool("md5") {
-						fmt.Printf("%x", md5.Sum(data))
-					}
-					if c.Bool("sha1") {
-						fmt.Printf("%x", sha1.Sum(data))
-					}
-					if c.Bool("sha256") {
-						fmt.Printf("%x", sha256.Sum256(data))
-					}
+				// Already checked file given file exists
+				// therefore read the file content and turn to byte type
+				fileContent, _ := ioutil.ReadFile(filename)
+				byteFileContent := []byte(fileContent)
+
+				// print specific checksum depends on given flag
+				if c.Bool("md5") {
+					fmt.Printf("%x", md5.Sum(byteFileContent))
+				}
+				if c.Bool("sha1") {
+					fmt.Printf("%x", sha1.Sum(byteFileContent))
+				}
+				if c.Bool("sha256") {
+					fmt.Printf("%x", sha256.Sum256(byteFileContent))
 				}
 
 				return nil
