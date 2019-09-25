@@ -23,7 +23,7 @@ func CheckFileExists(filename string) bool {
 	return true
 }
 
-// CheckFileIsBinary : if given file is binary data , return ture.
+// CheckFileIsBinary : if given file is binary data , return true.
 // Otherwise(vaild MIME type) , return false
 func CheckFileIsBinary(filename string) bool {
 
