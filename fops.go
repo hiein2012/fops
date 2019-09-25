@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/urfave/cli"
@@ -20,6 +21,23 @@ func CheckFileExists(filename string) bool {
 		return false
 	}
 	return true
+}
+
+// CheckFileIsBinary : if given file is binary data , return ture.
+// Otherwise(vaild MIME type) , return false
+func CheckFileIsBinary(filename string) bool {
+
+	fileContent, _ := ioutil.ReadFile(filename)
+	byteFileContent := []byte(fileContent)
+
+	// DetectContentType always returns a valid MIME type
+	// If it is binary data , http.DetectContentType() returns "application/octet-stream"
+	contentType := http.DetectContentType(byteFileContent)
+
+	if contentType == "application/octet-stream" {
+		return true
+	}
+	return false
 }
 
 func main() {
@@ -54,9 +72,17 @@ func main() {
 				}
 
 				// Already checked file given file exists
+				// check the content of given file is binary type or not
+				// if it is binary type , return
+				if CheckFileIsBinary(filename) == true {
+					fmt.Println("error: Cannot do linecount for binary file " + filename)
+					return nil
+				}
+
+				// Already checked file given file exists , and not a binary file type
 				// use FileMode to check file/dir
 				fi, _ := os.Lstat(filename)
-				
+
 				switch mode := fi.Mode(); {
 				// if given file is directory
 				case mode.IsDir():
