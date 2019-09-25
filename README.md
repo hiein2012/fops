@@ -51,6 +51,7 @@ You can use `linecount` to get the rows number of input file , and use `-f` or `
 $ fops linecount -f inputfile.text
 ```
 
+
 - ### Function two : Print the checksum of file (support algorithms : md5 / sh1 / sha256 )
 
 You can assign specific flag to get checksum of file including three algorithms :
@@ -60,10 +61,6 @@ $ fops checksum -f  inputfile.text --sha1
 $ fops checksum -f  inputfile.text --sha256
 ```
 
-
-## Features not yet implemented
-
-- Function `linecount`  can't not detect binary file .
 
 ##  Prerequisites
 
